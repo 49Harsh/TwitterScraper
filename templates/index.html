@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Twitter Trends Scraper</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Twitter Trends Scraper</h1>
+        
+        {% if error %}
+        <div class="error-message">
+            {{ error }}
+        </div>
+        {% endif %}
+        
+        {% if trends %}
+        <div class="trends-container">
+            <h2>Latest Twitter Trends</h2>
+            <p class="timestamp">As of {{ trends.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</p>
+            
+            <ul class="trends-list">
+                {% for i in range(1, 6) %}
+                <li>{{ trends['nameoftrend' + i|string] }}</li>
+                {% endfor %}
+            </ul>
+            
+            <p class="ip-info">IP address used: {{ trends.ip_address }}</p>
+            
+            <div class="json-container">
+                <h3>MongoDB Record:</h3>
+                <pre>{{ json_data }}</pre>
+            </div>
+        </div>
+        {% endif %}
+        
+        <form method="post" class="scrape-form">
+            <button type="submit" class="scrape-button">
+                {% if trends %}
+                    Click here to run the query again
+                {% else %}
+                    Click here to run the script
+                {% endif %}
+            </button>
+        </form>
+    </div>
+</body>
+</html>
